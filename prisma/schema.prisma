@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+// @@map renames a table and @@map("column_name") renames a column
+// without theres Prisma will use Pascal, singlular tables and camelCase columns, which sucks
+model User {
+  @@map("users")
+  id       String   @id @default(uuid())
+  email    String   @unique
+  name     String?
+  password String
+  topics   Topic[]
+}
+
+model Topic {
+  @@map("topics")
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id])
+}
