@@ -8,7 +8,7 @@ export default async function Users(): Promise<JSX.Element> {
       <h2>User List</h2>
       {users.map((user) => (
         <div key={user.id}>
-          {user.id} - {user.username}
+          {user.id} - {user.uid}
         </div>
       ))}
     </div>

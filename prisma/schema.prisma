@@ -10,18 +10,16 @@ datasource db {
 // without theres Prisma will use Pascal, singlular tables and camelCase columns, which sucks
 model User {
   @@map("users")
-  id       String   @id @default(uuid())
-  email    String   @unique
-  name     String?
-  password String
+  id       Int   @id @default(autoincrement())
+  uid      String @unique
   topics   Topic[]
 }
 
 model Topic {
   @@map("topics")
-  id          String   @id @default(uuid())
+  id          Int   @id @default(autoincrement())
   title       String
   description String
-  userId      String   @map("user_id")
+  userId      Int   @map("user_id")
   user        User     @relation(fields: [userId], references: [id])
 }
