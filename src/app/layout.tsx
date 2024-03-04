@@ -1,19 +1,30 @@
 import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import "./globals.css";
+import SessionProvider from "@/components/SessionProvider";
 
 export const metadata: Metadata = {
   title: "Ollie Notes",
   description: "Take all your notes with Ollie Notes! Keep track of blogs, videos, and more.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(); // this is how we can access the session on the server
+  console.log('session:', session);
+
+  // We then pass it into the SessionProvider as context
+  // NOTE: because we are using children, this does NOT mean suddenly EVERY component is a client component
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SessionProvider session={session}>
+          {children}
+        </SessionProvider>
+        </body>
     </html>
   );
 }
