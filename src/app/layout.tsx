@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import "./globals.css";
 import SessionProvider from "@/components/SessionProvider";
+import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
   title: "Ollie Notes",
@@ -22,6 +23,7 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <SessionProvider session={session}>
+          <NavBar />
           {children}
         </SessionProvider>
         </body>

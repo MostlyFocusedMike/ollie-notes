@@ -11,6 +11,11 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET ?? '',
     }),
   ],
+  // callbacks: {
+  //   async session({ session, user, token }: any) {
+  //     return session;
+  //   }
+  // },
 };
 
 export const handler = NextAuth(authOptions);
