@@ -1,19 +1,18 @@
 import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
+// this is a protected route
 export default async function ProfilePage () {
-  // naive implementation not using middleware yet
-  const session = await getServerSession(); // this is how we can access the session on the server
-  if (!session || !session.user) { return (
-      <main>
-        <h1>Log in!</h1>
-      </main>
-    );
+  const session = await getServerSession();
+
+  if (!session || !session.user) {
+    redirect('/api/auth/signin');
   }
 
   return (
-    <main>
-      <h1>{session.user.name}</h1>
-      <h2>Welcome!</h2>
-    </main>
+    <div>
+      <h1>Profile</h1>
+      <p>Welcome {session.user.name}</p>
+    </div>
   );
 }
