@@ -15,8 +15,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(); // this is how we can access the session on the server
-  console.log('session:', session);
-
   // We then pass it into the SessionProvider as context
   // NOTE: because we are using children, this does NOT mean suddenly EVERY component is a client component
   return (
