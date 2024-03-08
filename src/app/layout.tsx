@@ -24,7 +24,7 @@ export default async function RootLayout({
           <NavBar />
           {children}
         </SessionProvider>
-        </body>
+      </body>
     </html>
   );
 }

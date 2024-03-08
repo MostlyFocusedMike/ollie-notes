@@ -1,7 +1,8 @@
 -- CreateTable
 CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
-    "uid" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -17,7 +18,7 @@ CREATE TABLE "topics" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_uid_key" ON "users"("uid");
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- AddForeignKey
 ALTER TABLE "topics" ADD CONSTRAINT "topics_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

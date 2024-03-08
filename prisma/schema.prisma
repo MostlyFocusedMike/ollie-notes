@@ -6,20 +6,24 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 // @@map renames a table and @@map("column_name") renames a column
 // without theres Prisma will use Pascal, singlular tables and camelCase columns, which sucks
 model User {
+  id     Int     @id @default(autoincrement())
+  email  String  @unique
+  name   String
+  topics Topic[]
+
   @@map("users")
-  id       Int   @id @default(autoincrement())
-  uid      String @unique
-  topics   Topic[]
 }
 
 model Topic {
-  @@map("topics")
-  id          Int   @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   title       String
   description String
-  userId      Int   @map("user_id")
-  user        User     @relation(fields: [userId], references: [id])
+  userId      Int    @map("user_id")
+  user        User   @relation(fields: [userId], references: [id])
+
+  @@map("topics")
 }

@@ -1,10 +1,24 @@
 import NextAuth from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
+import User from '@/models/User';
+import type { AuthOptions } from "next-auth"
 
 // http://localhost:3000/api/auth/providers
 // This is a page that shows all available providers
 
-export const authOptions = {
+// We need to modify the session to include the user id (though this will only be available on the frontend)
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id?: number;
+      name?: string | null | undefined;
+      email?: string | null | undefined;
+      image?: string | null | undefined;
+    };
+  }
+}
+
+export const authOptions: AuthOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID ?? '',
@@ -12,9 +26,24 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-  //   async session({ session, user, token }: any) {
-  //     return session;
-  //   }
+    async signIn({ user: { email, name } }) {
+      if (!email || !name) return false;
+      const newUser = await User.createIfNotExists({ email, name });
+      return !!newUser;
+    },
+    async session({ session }) {
+      if (!session.user.email) {
+        // I have no idea if the email can be missing, but returning the session
+        // anyway because I don't know what will happen if I don't.
+        console.warn('WARNING: No email found in session:', session)
+        return session;
+      }
+
+      const dbUser = await User.findByEmail(session.user.email);
+      if (dbUser && session.user) session.user.id = dbUser.id;
+
+      return session;
+    },
   },
 };
 

@@ -10,7 +10,7 @@ export default function NavBar() {
   const { data: session } = useSession();
 
   const isSignedIn = !!session?.user;
-
+  console.log('session here:', session);
   return (
     <nav>
       <ul>
@@ -22,8 +22,8 @@ export default function NavBar() {
         </li>
         {
           isSignedIn
-          ? <li> <Link href="/profile">Profile</Link> </li>
-          : <li> <Link href="/api/auth/signin">Sign In</Link> </li>
+            ? <li> <Link href="/profile">Profile</Link> </li>
+            : <li> <Link href="/api/auth/signin">Sign In</Link> </li>
         }
       </ul>
     </nav>
