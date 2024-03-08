@@ -1,21 +1,38 @@
 import { prisma } from "@/db";
 
-// TODO: Move to types file once you have a solid user type
+type NewUserType = {
+  email: string;
+  name: string;
+  profilePic: string;
+  bio: string;
+  provider: string;
+};
+
+// extend NewUserType to include id
 type NewDBUserType = {
   id: number;
   email: string;
   name: string;
+  bio: string;
+  profilePic: string;
+  provider: string;
 };
 
 class User {
   id: number;
   email: string;
   name: string;
+  profilePic: string;
+  bio: string;
+  provider: string;
 
-  constructor({ id, email, name }: NewDBUserType) {
+  constructor({ id, email, name, profilePic, bio, provider }: NewDBUserType) {
     this.id = id;
     this.email = email;
     this.name = name;
+    this.profilePic = profilePic;
+    this.bio = bio;
+    this.provider = provider;
   }
 
   static async findMany(): Promise<User[]> {
@@ -36,18 +53,18 @@ class User {
     return user ? new User(user) : null;
   }
 
-  static async create(newUser: { email: string; name: string }): Promise<User> {
+  static async create(newUser: NewUserType): Promise<User> {
     const user = await prisma.user.create({ data: newUser });
 
-    return new User(user);
+    return new User(user as NewDBUserType);
   }
 
-  static async createIfNotExists(newUser: { email: string; name: string }): Promise<User | null> {
+  static async createIfNotExists(newUser: NewUserType): Promise<User | null> {
     try {
       const user = await prisma.user.upsert({
         where: { email: newUser.email },
-        update: {},
-        create: { name: newUser.name, email: newUser.email },
+        update: newUser,
+        create: newUser,
       });
 
       return new User(user);
