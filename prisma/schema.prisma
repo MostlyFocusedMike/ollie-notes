@@ -10,9 +10,13 @@ datasource db {
 // @@map renames a table and @@map("column_name") renames a column
 // without theres Prisma will use Pascal, singlular tables and camelCase columns, which sucks
 model User {
-  id     Int     @id @default(autoincrement())
-  email  String  @unique
-  name   String
+  id         Int    @id @default(autoincrement())
+  email      String @unique
+  name       String
+  bio        String
+  profilePic String @map("profile_pic")
+  provider   String
+
   topics Topic[]
 
   @@map("users")
