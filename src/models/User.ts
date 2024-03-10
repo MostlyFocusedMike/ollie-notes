@@ -1,4 +1,5 @@
 import { prisma } from "@/db";
+import { handleErrors } from "./utils";
 
 type NewUserType = {
   email: string;
@@ -36,42 +37,44 @@ class User {
   }
 
   static async findMany(): Promise<User[]> {
-    const users = await prisma.user.findMany();
-    return users.map((user) => new User(user));
+    const users = await prisma.user.findMany().catch(handleErrors);
+    return (users || []).map((user) => new User(user));
   }
 
   static async findByEmail(email: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user
+      .findUnique({ where: { email } })
+      .catch(handleErrors);
 
     return user ? new User(user) : null;
   }
 
-
-  static async findOne(id: number): Promise<User | null> {
-    const user = await prisma.user.findUnique({ where: { id } });
+  static async find(id: number): Promise<User | null> {
+    const user = await prisma.user
+      .findUnique({ where: { id } })
+      .catch(handleErrors);
 
     return user ? new User(user) : null;
   }
 
-  static async create(newUser: NewUserType): Promise<User> {
-    const user = await prisma.user.create({ data: newUser });
+  static async create(newUser: NewUserType): Promise<User | null> {
+    const user: NewDBUserType | null = await prisma.user
+      .create({ data: newUser })
+      .catch(handleErrors);
 
-    return new User(user as NewDBUserType);
+    return user ? new User(user) : null;
   }
 
   static async createIfNotExists(newUser: NewUserType): Promise<User | null> {
-    try {
-      const user = await prisma.user.upsert({
+    const user = await prisma.user
+      .upsert({
         where: { email: newUser.email },
         update: newUser,
         create: newUser,
-      });
+      })
+      .catch(handleErrors);
 
-      return new User(user);
-    } catch (error) {
-      console.log('error:', error);
-      return null
-    }
+    return user ? new User(user) : null;
   }
 }
 
