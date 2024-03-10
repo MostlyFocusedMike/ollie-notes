@@ -16,6 +16,13 @@ declare module "next-auth" {
       image?: string | null | undefined;
     };
   }
+
+  interface Profile {
+    email?: string | undefined;
+    name?: string | undefined;
+    avatar_url?: string | undefined;
+    bio?: string | undefined;
+  }
 }
 
 export const authOptions: AuthOptions = {
@@ -26,9 +33,15 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user: { email, name } }) {
+    async signIn({ user: { email, name }, account, profile }) {
       if (!email || !name) return false;
-      const newUser = await User.createIfNotExists({ email, name });
+      const newUser = await User.createIfNotExists({
+        email,
+        name,
+        profilePic: profile?.avatar_url || "",
+        bio: profile?.bio || "",
+        provider: account?.provider || "",
+      });
       return !!newUser;
     },
     async session({ session }) {
