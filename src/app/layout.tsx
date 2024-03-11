@@ -22,7 +22,7 @@ export default async function RootLayout({
       <body>
         <SessionProvider session={session}>
           <NavBar />
-          <main>
+          <main className="container mx-auto px-4">
             {children}
           </main>
         </SessionProvider>
