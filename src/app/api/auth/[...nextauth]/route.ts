@@ -25,7 +25,7 @@ declare module "next-auth" {
   }
 }
 
-export const authOptions: AuthOptions = {
+const authOptions: AuthOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID ?? '',
@@ -60,6 +60,6 @@ export const authOptions: AuthOptions = {
   },
 };
 
-export const handler = NextAuth(authOptions);
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
