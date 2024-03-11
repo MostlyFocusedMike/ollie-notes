@@ -15,7 +15,7 @@ export default async function ProfilePage() {
 
   return (
     <>
-      <h1>{name}</h1>
+      <h1 className='text-4xl font-bold mt-8 mb-4'>{name}</h1>
       <Image src={profilePic} alt={`${name}'s Avatar`} width={100} height={100} />
       <p>{bio}</p>
       <p>Email: {email}</p>

@@ -1,0 +1,4 @@
+/* install basic tailwind css starter file for a nextjs project */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
