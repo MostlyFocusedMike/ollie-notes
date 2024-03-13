@@ -76,6 +76,16 @@ class User {
 
     return user ? new User(user) : null;
   }
+
+  async getTopics() {
+    return prisma.topic.findMany({ where: { userId: this.id } });
+  }
+
+  async createNewTopic(title: string, description: string) {
+    return prisma.topic.create({
+      data: { title, description, userId: this.id },
+    });
+  }
 }
 
 export default User;
