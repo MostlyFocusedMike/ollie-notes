@@ -17,13 +17,10 @@ export default async function RootLayout({
   const topics = await user.getTopics();
   return (
     <>
-      <h1 className='text-4xl font-bold mt-8 mb-4'>Notes</h1>
-      <section className="flex gap-4">
-
+      <div className="flex gap-4">
         <TopicsSidebar topics={topics} />
         {children}
-
-      </section>
+      </div >
     </>
   );
 }

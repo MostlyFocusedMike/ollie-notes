@@ -1,21 +1,9 @@
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import User from '@/models/User';
-import TopicsSidebar from '@/components/TopicsSideBar';
-
-// this is a protected route
-export default async function NotesPage({ children }) {
-  const session = await getServerSession();
-  if (!session?.user?.email) return redirect('/');
-
-  const user = await User.findByEmail(session.user.email);
-  if (!user) return redirect('/');
-
-  const topics = await user.getTopics();
-
+export default async function NotesPage() {
+  // TODO: Get a default starting note somehow
   return (
-    <>
+    <section aria-label="Notes">
+      <h1 className="text-4xl font-bold mt-8 mb-4" >Notes</h1>
       <p>Select some notes to get started</p>
-    </>
+    </section>
   );
 }
