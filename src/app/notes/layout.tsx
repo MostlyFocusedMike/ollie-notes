@@ -3,8 +3,11 @@ import { redirect } from 'next/navigation';
 import User from '@/models/User';
 import TopicsSidebar from '@/components/TopicsSideBar';
 
-// this is a protected route
-export default async function NotesPage({ children }) {
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   const session = await getServerSession();
   if (!session?.user?.email) return redirect('/');
 
@@ -12,10 +15,15 @@ export default async function NotesPage({ children }) {
   if (!user) return redirect('/');
 
   const topics = await user.getTopics();
-
   return (
     <>
-      <p>Select some notes to get started</p>
+      <h1 className='text-4xl font-bold mt-8 mb-4'>Notes</h1>
+      <section className="flex gap-4">
+
+        <TopicsSidebar topics={topics} />
+        {children}
+
+      </section>
     </>
   );
 }
