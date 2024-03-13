@@ -81,10 +81,10 @@ class User {
     return prisma.topic.findMany({ where: { userId: this.id } });
   }
 
-  async createNewTopic(title: string, description: string) {
+  async createNewTopic({ title, description }: RawTopicType): Promise<TopicType | null> {
     return prisma.topic.create({
       data: { title, description, userId: this.id },
-    });
+    }).catch(handleErrors);
   }
 }
 

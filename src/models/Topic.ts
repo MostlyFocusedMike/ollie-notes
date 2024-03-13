@@ -1,16 +1,6 @@
 import { prisma } from "@/db";
 import { handleErrors } from "./utils";
 
-type NewTopicType = {
-  title: string;
-  description: string;
-  userId: number;
-}
-
-type TopicType = NewTopicType & {
-  id: number;
-};
-
 class Topic {
   id: number;
   title: string;
