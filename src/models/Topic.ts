@@ -19,6 +19,18 @@ class Topic {
     return newTopic ? new Topic(newTopic) : null;
   }
 
+  static async findWithNotesAndResources(id: number): Promise<Topic | null> {
+    const topic = await prisma.topic
+      .findUnique(
+        {
+          where: { id },
+          // include: { notes: true, resources: true }
+        }
+      )
+      .catch(handleErrors);
+    return topic ? new Topic(topic) : null;
+  }
+
   static async findMany(): Promise<Topic[]> {
     const topics = await prisma.topic.findMany().catch(handleErrors);
     return (topics || []).map((topic) => new Topic(topic));
