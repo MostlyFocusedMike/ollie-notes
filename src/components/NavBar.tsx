@@ -26,7 +26,7 @@ export default function NavBar() {
       <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
         <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Ollie Notes</span>
       </a>
-      <nav className="bg-white border-gray-200 dark:bg-gray-900">
+      <nav aria-label="Main" className="bg-white border-gray-200 dark:bg-gray-900">
         <ul className="flex space-x-2">
           <li className={createClassNameWithActiveLink('/articles')} >
             <Link href="/articles">Articles</Link>
