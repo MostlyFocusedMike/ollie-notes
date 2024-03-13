@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 export default function TopicsSidebar({ topics }: { topics: TopicType[] }) {
+  // https://rocketvalidator.com/accessibility-validation/axe/4.8/landmark-complementary-is-top-level
+  // This is why this is a pure nav, and not an aside.
   return (
-    <aside>
+    <div>
       <nav aria-label="Topics">
-        <h2>Topics</h2>
         <ul>
           {
             topics.map((topic) => (
@@ -17,6 +18,10 @@ export default function TopicsSidebar({ topics }: { topics: TopicType[] }) {
           }
         </ul>
       </nav>
-    </aside>
+      <form>
+        {/* TODO: This will pop open a modal later */}
+        <button className="text-white bg-green-700 hover:bg-blue-700 font-medium rounded-lg text-sm px-2 py-2" aria-label="Create New Topic" title="Create New Topic" type="submit">+</button>
+      </form>
+    </div>
   );
 }
