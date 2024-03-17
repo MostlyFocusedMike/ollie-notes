@@ -1,4 +1,5 @@
 import Link from "next/link";
+import TopicModalForm from "./TopicModalForm";
 
 export default function TopicsSidebar({ topics }: { topics: TopicType[] }) {
   // https://rocketvalidator.com/accessibility-validation/axe/4.8/landmark-complementary-is-top-level
@@ -18,10 +19,7 @@ export default function TopicsSidebar({ topics }: { topics: TopicType[] }) {
           }
         </ul>
       </nav>
-      <form>
-        {/* TODO: This will pop open a modal later */}
-        <button className="text-white bg-green-700 hover:bg-blue-700 font-medium rounded-lg text-sm px-2 py-2" aria-label="Create New Topic" title="Create New Topic" type="submit">+</button>
-      </form>
+      <TopicModalForm />
     </div>
   );
 }
