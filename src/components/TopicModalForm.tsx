@@ -22,24 +22,20 @@ const didClickOutsideOfModal = (e: React.MouseEvent) => {
 }
 
 export default function TopicModalForm({
-  openButtonText = "Open Modal",
-  ariaOpenButtonLabel = "Open Modal",
+  openButtonText = "Add New Topic",
+  ariaOpenButtonLabel = "Open 'add topic' form",
 }: ModalPropsType) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const topicId = useId();
   const descriptionId = useId();
 
-  const handleOpenModal = () => {
-    if (!dialogRef?.current) return;
-    dialogRef.current.showModal();
-  };
+  const handleOpenModal = () => dialogRef?.current?.showModal()
 
-  const handleModalClick = (e: React.MouseEvent) => {
-    if (!dialogRef?.current || e.target instanceof HTMLDialogElement) return;
-    if (didClickOutsideOfModal(e)) dialogRef.current.close();
+  const handleCancelModal = () => dialogRef?.current?.close();
+
+  const handleBackdropClickCheck = (e: React.MouseEvent) => {
+    if (didClickOutsideOfModal(e)) dialogRef?.current?.close();
   }
-
-  const handleCancel = () => dialogRef?.current?.close();
 
   const handleSubmit = (e: React.FormEvent) => {
     console.log('Hi submit:');
@@ -53,9 +49,10 @@ export default function TopicModalForm({
     >
       {openButtonText}
     </button>
-    <dialog ref={dialogRef} onClick={handleModalClick}>
-      <form aria-label={`Close modal`} method="dialog"><button>X</button></form>
+    <dialog ref={dialogRef} onClick={handleBackdropClickCheck}>
+      <form className="absolute right-1" aria-label={`Close modal`} method="dialog"><button>X</button></form>
       <form method="dialog" onSubmit={handleSubmit}>
+        <h2 className="text-2xl font-bold mb-4 back">Add New Topic</h2>
         <div>
           <label htmlFor={topicId}>Topic</label>
           <input id={topicId} type="text" className="border-2" />
@@ -67,7 +64,7 @@ export default function TopicModalForm({
         <div>
           <button
             type="button"
-            onClick={handleCancel}
+            onClick={handleCancelModal}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Cancel

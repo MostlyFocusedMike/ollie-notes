@@ -19,7 +19,9 @@ export default function TopicsSidebar({ topics }: { topics: TopicType[] }) {
           }
         </ul>
       </nav>
-      <TopicModalForm />
+      <TopicModalForm
+        openButtonText="+"
+      />
     </div>
   );
 }
