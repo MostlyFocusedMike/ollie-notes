@@ -29,7 +29,7 @@ export default function TopicModalForm({
   const topicId = useId();
   const descriptionId = useId();
 
-  const handleOpenModal = () => dialogRef?.current?.showModal()
+  const handleOpenModal = () => dialogRef?.current?.showModal();
 
   const handleCancelModal = () => dialogRef?.current?.close();
 
@@ -37,8 +37,11 @@ export default function TopicModalForm({
     if (didClickOutsideOfModal(e)) dialogRef?.current?.close();
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    console.log('Hi submit:');
+  const handleSubmit = async (e: React.FormEvent) => {
+    const newForm = new FormData(e.target as HTMLFormElement);
+    const data = await fetch('/api/topics', { method: 'POST', body: newForm }).then((res) => res.json());
+    console.log('data:', data);
+    dialogRef?.current?.close();
   }
 
   return <>
@@ -55,11 +58,11 @@ export default function TopicModalForm({
         <h2 className="text-2xl font-bold mb-4 back">Add New Topic</h2>
         <div>
           <label htmlFor={topicId}>Topic</label>
-          <input id={topicId} type="text" className="border-2" />
+          <input name='title' id={topicId} type="text" className="border-2" />
         </div>
         <div>
-          <label htmlFor={descriptionId}> Description:</label>
-          <input id={descriptionId} type="text" className="border-2" />
+          <label htmlFor={descriptionId}>Description:</label>
+          <input name='description' id={descriptionId} type="text" className="border-2" />
         </div>
         <div>
           <button
